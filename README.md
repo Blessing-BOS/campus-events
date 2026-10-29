@@ -22,7 +22,7 @@
 
 ## Windows 本地完整运行
 
-前提：安装了 Go 1.24+，以及 MySQL 的 mysqld、mysql、mysqladmin 可执行文件。本机的 Go 1.27.2 / MySQL 5.7.44 已实测；方案的容器目标版本为 MySQL 8.4。
+前提：安装了 Go 1.24+，以及 MySQL 的 mysqld、mysql、mysqladmin 可执行文件。本机的 Go 1.27.2 / MySQL 5.7.44 已实测；MySQL 8.4 已在 GitHub CI 中通过集成测试。
 
 在项目根目录的 PowerShell 执行：
 
@@ -101,7 +101,7 @@ docker compose up --build -d
 
 Compose 包含 MySQL 8.4、Redis、一次性 seed 和 Go 应用。依赖健康后初始化数据，再启动应用；应用绑定到本机 8080，数据库与 Redis 不暴露宿主端口。停止使用 `docker compose down`，保留数据卷。
 
-当前电脑没有 Docker，此流程已提供配置，尚未实跑容器。MySQL 8.4 与 Linux race 检查也配置在 CI 中，待推送 GitHub 后执行；本地验证不冒充 CI 结果。
+当前电脑没有 Docker，完整 Compose 启动流程尚未实跑。GitHub CI 已实际启动 MySQL 8.4 容器，并通过集成测试、Linux race 检查与构建。[首次 CI 验证记录](https://github.com/Blessing-BOS/campus-events/actions/runs/40888836840)。
 
 ## 测试
 

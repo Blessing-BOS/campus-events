@@ -9,4 +9,4 @@
 - 增加响应式演示页面、Windows 本地启动脚本、Compose 与 CI 配置。
 - 增加真实 MySQL 并发与回滚集成测试、HTTP 测试、截图与验收文档。
 
-状态为本地完成，尚未在 GitHub 创建发布或执行远程 CI。
+源码已上传 GitHub，并通过 MySQL 8.4 集成测试、Linux race 检查与构建。
