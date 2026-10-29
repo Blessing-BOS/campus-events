@@ -1,10 +1,10 @@
 # Campus Events · 校园活动报名与签到系统
 
-一个组织者发布有限名额的校园活动，学生报名和取消，组织者在现场核验签到的个人项目。
+校园活动报名与签到系统，支持活动发布、名额管理、学生报名、取消报名及现场签到，提供学生与组织者两类角色的完整操作流程。
 
-业务代码独立实现，使用 Go、Gin、GORM、MySQL，以及可选的 Redis 静态信息缓存。页面由 Go 服务直接提供，前端无需单独安装或构建。
+系统采用 Go、Gin、GORM 和 MySQL，支持可选的 Redis 静态信息缓存。前端静态资源嵌入 Go 服务，统一提供页面与 API，无需独立构建前端。
 
-![校园活动首页](docs/screenshots/home.png)
+![校园活动首页](docs/screenshots/home.jpg)
 
 ## 功能
 
@@ -85,7 +85,7 @@ go run ./cmd/seed
 go run ./cmd/server
 ```
 
-seed 只接受 `campus_events_*` 专用数据库，创建表并补齐演示数据，不删除已有数据。已有演示账号不会重置密码；第一阶段禁用的账号会升级为可登录的演示账号。服务启动不自动建表，数据库不可用时不会静默回退为演示模式。
+seed 只接受 `campus_events_*` 专用数据库，创建表并补齐演示数据，不删除已有数据或重置既有账号密码。服务启动不自动建表，数据库不可用时不会静默回退为演示模式。
 
 直接 Go 启动时不会自动读取 `.env`。需要 Redis 时在启动前设置 `REDIS_ADDR=127.0.0.1:6379` 与可选的 `REDIS_PASSWORD`；不配置即可正常完成全部业务。JWT_SECRET 至少 32 字节，重新生成会使旧令牌失效。
 
@@ -99,7 +99,7 @@ docker compose up --build -d
 
 Compose 包含 MySQL 8.4、Redis、一次性 seed 和 Go 应用。依赖健康后初始化数据，再启动应用；应用绑定到本机 8080，数据库与 Redis 不暴露宿主端口。停止使用 `docker compose down`，保留数据卷。
 
-当前电脑没有 Docker，完整 Compose 启动流程尚未实跑。GitHub CI 已实际启动 MySQL 8.4 容器，并通过集成测试、Linux race 检查与构建。[首次 CI 验证记录](https://github.com/Blessing-BOS/campus-events/actions/runs/40888836840)。
+GitHub CI 已实际启动 MySQL 8.4 容器，并通过集成测试、Linux race 检查与构建；完整 Compose 部署流程尚未执行端到端验证。[CI 验证记录](https://github.com/Blessing-BOS/campus-events/actions/runs/40888836840)。
 
 ## 测试
 
@@ -144,7 +144,23 @@ JWT 只承载身份与会话 ID，服务端查询会话和用户真实角色；�
 
 Redis 只缓存标题、地点、介绍和时间等公开元信息。缓存命中仍读取数据库的状态与当前名额；报名决策完全由 MySQL 负责。当前缓存减小详情读取的字段范围，不声称减少数据库请求次数或实现了性能提升。
 
-当前单活动行锁会限制热点活动的并行度，基础限流也只在单进程生效。本项目没有凭空加入分布式锁或队列；后续优化应先测量再决定。公开部署需自行配置 HTTPS、账号与密钥管理。
+当前采用单活动行锁协调名额更新，热点活动可能受锁竞争限制；基础限流在单进程内生效。后续扩展可结合实际负载评估锁粒度、限流策略和异步处理。公开部署需配置 HTTPS、账号与密钥管理。
+
+## 界面预览
+
+<details>
+<summary>活动管理</summary>
+
+![活动管理](docs/screenshots/manage.jpg)
+
+</details>
+
+<details>
+<summary>报名名单与签到</summary>
+
+![报名名单与签到](docs/screenshots/check-in.jpg)
+
+</details>
 
 ## 目录与文档
 
@@ -164,8 +180,6 @@ docs/                       接口、设计、验收与截图
 
 - [完整接口说明](docs/API.md)
 - [完整版本验收记录](docs/完整版验收.md)
-- [设计方案及实现差异](docs/项目设计方案.md)
-- [上传 GitHub 前的准备](docs/GitHub发布准备.md)
-- [活动管理截图](docs/screenshots/manage.png) · [签到截图](docs/screenshots/check-in.png)
+- [系统设计](docs/项目设计方案.md)
 
-原第一阶段文档保留作开发历史，当前能力和启动步骤以本 README 为准。项目使用 AI 辅助实现；学习拆解将在完整版本之后进行。第三方依赖保留各自许可，本仓库的发布许可证待作者在公开前选择。
+第三方依赖遵循各自许可证。
