@@ -1,0 +1,7 @@
+.run/
+.env
+*.exe
+coverage.out
+/server
+/seed
+*.test

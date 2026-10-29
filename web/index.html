@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#143c35" />
+    <title>Campus Events · 校园活动</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a href="#explore" class="brand"
+        ><span class="brand-mark">C.</span
+        ><span>Campus<span class="brand-light"> Events</span></span></a
+      >
+      <nav aria-label="主导航">
+        <a href="#explore" data-nav="explore">发现活动</a
+        ><a href="#mine" data-nav="mine">我的报名</a
+        ><a href="#manage" data-nav="manage" id="manage-link" hidden
+          >活动管理</a
+        >
+      </nav>
+      <div id="account-actions"></div>
+    </header>
+    <main id="main" tabindex="-1">
+      <section class="hero">
+        <div class="eyebrow">MAKE YOUR CAMPUS COUNT</div>
+        <h1>让课余时间，<br /><span>发生点好事。</span></h1>
+        <p>一场分享，一次相遇，一个新的开始。<br />发现校园里的下一份灵感。</p>
+      </section>
+      <div class="loading">正在加载活动…</div>
+    </main>
+    <footer>
+      <span class="footer-brand">Campus Events</span
+      ><span>在校园里，连接更多可能。</span
+      ><span>为每一次参与，留一个位置。</span>
+    </footer>
+    <dialog id="auth-dialog">
+      <div class="dialog-heading">
+        <div>
+          <span class="eyebrow">WELCOME TO CAMPUS</span>
+          <h2 id="auth-title">欢迎回来</h2>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          data-close="auth-dialog"
+          aria-label="关闭"
+        >
+          ×
+        </button>
+      </div>
+      <form id="auth-form">
+        <label
+          >用户名<input
+            name="username"
+            autocomplete="username"
+            minlength="3"
+            maxlength="32"
+            required
+            placeholder="3～32 位字母、数字或下划线" /></label
+        ><label
+          >密码<input
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            minlength="8"
+            maxlength="72"
+            required
+            placeholder="至少 8 位"
+        /></label>
+        <p id="auth-error" class="form-error" role="alert"></p>
+        <button class="button primary wide" type="submit" id="auth-submit">
+          登录</button
+        ><button class="button text wide" type="button" id="auth-switch">
+          还没有账号？注册学生账号
+        </button>
+      </form>
+    </dialog>
+    <dialog id="detail-dialog" class="large">
+      <div id="detail-content"></div>
+    </dialog>
+    <dialog id="event-dialog" class="large">
+      <div class="dialog-heading">
+        <div>
+          <span class="eyebrow">CREATE A MOMENT</span>
+          <h2 id="event-form-title">创建校园活动</h2>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          data-close="event-dialog"
+          aria-label="关闭"
+        >
+          ×
+        </button>
+      </div>
+      <form id="event-form">
+        <label
+          >活动标题<input
+            name="title"
+            minlength="2"
+            maxlength="120"
+            required
+            placeholder="给这次相聚起个名字"
+        /></label>
+        <div class="form-grid">
+          <label
+            >活动地点<input
+              name="location"
+              maxlength="200"
+              required
+              placeholder="例如：图书馆研讨室" /></label
+          ><label
+            >报名名额<input
+              name="capacity"
+              type="number"
+              min="1"
+              max="10000"
+              value="30"
+              required /></label
+          ><label
+            >报名开始<input
+              name="registration_starts_at"
+              type="datetime-local"
+              required /></label
+          ><label
+            >报名截止<input
+              name="registration_ends_at"
+              type="datetime-local"
+              required /></label
+          ><label
+            >活动开始<input
+              name="starts_at"
+              type="datetime-local"
+              required /></label
+          ><label
+            >活动结束<input name="ends_at" type="datetime-local" required
+          /></label>
+        </div>
+        <label
+          >活动介绍<textarea
+            name="description"
+            maxlength="5000"
+            rows="4"
+            placeholder="聊聊这次活动的内容和适合参加的同学"
+          ></textarea>
+        </label>
+        <p class="hint">
+          报名开始应早于截止，报名截止不晚于活动开始。发布后，活动内容与名额将锁定。
+        </p>
+        <p id="event-error" class="form-error" role="alert"></p>
+        <button class="button primary wide" type="submit">保存为草稿</button>
+      </form>
+    </dialog>
+    <div id="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>
